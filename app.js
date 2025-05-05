@@ -1,5 +1,5 @@
 const express = require('express');
-const newman = require('newman');
+const testRoutes = require('./routes/testRoute');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -12,6 +12,8 @@ app.use(express.urlencoded({ extended: true }));
 app.get('/', (req, res) => {
   res.send('Hello World');
 });
+
+app.use('/api/test', testRoutes);
 
 // Error handling middleware
 app.use((err, req, res, next) => {
