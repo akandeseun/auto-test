@@ -16,11 +16,21 @@ const executeTest = async (req, res) => {
     return res.status(400).send('Invalid JSON format in the uploaded file.');
   }
 
+  // Define the path for the report
+  const reportPath = path.join(__dirname, '..', 'reports', `report-${Date.now()}.html`);
+  // Ensure the reports directory exists
+  fs.mkdirSync(path.dirname(reportPath), { recursive: true });
+
   newman.run(
     {
       // Use the parsed JSON from the uploaded file
       collection: collectionJson,
-      reporters: 'cli',
+      reporters: ['cli', 'htmlextra'],
+      reporter: {
+        htmlextra: {
+          export: reportPath,
+        },
+      },
     },
     function (err, summary) {
       // Added summary parameter
@@ -32,7 +42,11 @@ const executeTest = async (req, res) => {
       console.log('collection run complete!');
       // Send a success response
       console.log('stats', summary);
-      res.status(200).json({ message: 'Collection run complete!', stats: summary.run.stats });
+      res.status(200).json({
+        message: 'Collection run complete!',
+        stats: summary.run.stats,
+        reportPath: reportPath,
+      });
     },
   );
 };

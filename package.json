@@ -12,7 +12,8 @@
   "dependencies": {
     "express": "^5.1.0",
     "multer": "^1.4.5-lts.2",
-    "newman": "^6.2.1"
+    "newman": "^6.2.1",
+    "newman-reporter-htmlextra": "^1.23.1"
   },
   "devDependencies": {
     "nodemon": "^3.1.10"
